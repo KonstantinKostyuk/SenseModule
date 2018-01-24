@@ -3,6 +3,10 @@
 // Pololu Github - https://github.com/pololu/vl53l0x-arduino
 #include <VL53L0X.h>
 
+// --- define PINS
+#define LED_PIN 13
+#define OUT_PIN 11
+
 // --- define Variables
 int Distance_mm = 0;
 int Barrier_mm = 1000;
@@ -14,6 +18,11 @@ VL53L0X sensor;
 
 void setup()
 {
+  pinMode(LED_PIN, OUTPUT);  // LED PIN init
+  digitalWrite( LED_PIN, LOW);
+  pinMode(OUT_PIN, OUTPUT);  // OUT PIN init
+  digitalWrite( OUT_PIN, LOW);
+  
   Serial.begin(115200);
   Wire.begin();
 
@@ -36,6 +45,9 @@ void loop()
 {
   Distance_mm = sensor.readRangeSingleMillimeters();
   Distance_D = Distance_mm < Barrier_mm;
+  digitalWrite( OUT_PIN, Distance_D);
+  digitalWrite( LED_PIN, Distance_D);
+  
   if (sensor.timeoutOccurred()) 
     { Serial.print("Sensor TIMEOUT"); }
     else
