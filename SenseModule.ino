@@ -3,6 +3,9 @@
 // Pololu Github - https://github.com/pololu/vl53l0x-arduino
 #include <VL53L0X.h>
 
+// --- define debug print to Serial
+#define Debug
+
 // --- define PINS
 #define LED_PIN 13
 #define VCC_PIN 4
@@ -26,7 +29,9 @@ void setup()
   pinMode(VCC_PIN, OUTPUT);  // VCC PIN init
   digitalWrite( VCC_PIN, HIGH);
   
-  Serial.begin(115200);
+  #ifdef Debug
+    Serial.begin(115200);
+  #endif 
   Wire.begin();
 
   // init VL53L0X Object
@@ -42,24 +47,24 @@ void setup()
 
   // reduce timing budget to 20 ms (default is about 33 ms)
   sensor.setMeasurementTimingBudget(20000);
+
+  // Start continuous back-to-back mode
+  sensor.startContinuous();
 }
 
 void loop()
 {
-  Distance_mm = sensor.readRangeSingleMillimeters();
+  Distance_mm = sensor.readRangeContinuousMillimeters();
   Distance_D = Distance_mm < Barrier_mm;
   digitalWrite( OUT_PIN, Distance_D);
   digitalWrite( LED_PIN, Distance_D);
-  
-  if (sensor.timeoutOccurred()) 
-    { Serial.print("Sensor TIMEOUT"); }
-    else
-    { Serial.print(millis());
-      Serial.print(" - ");
-      Serial.print(Distance_mm);
-      Serial.print(" mm - ");
-      Serial.print(Distance_D);
-      Serial.print(" D");
-      Serial.println();
-    }
+
+  #ifdef Debug
+    Serial.print(millis());
+    Serial.print(" - ");
+    Serial.print(Distance_mm);
+    Serial.print(" mm - ");
+    Serial.print(Distance_D);
+    Serial.println(" D");
+  #endif   
 }
