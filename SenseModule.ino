@@ -5,7 +5,8 @@
 
 // --- define PINS
 #define LED_PIN 13
-#define OUT_PIN 11
+#define VCC_PIN 4
+#define OUT_PIN 5
 
 // --- define Variables
 int Distance_mm = 0;
@@ -22,6 +23,8 @@ void setup()
   digitalWrite( LED_PIN, LOW);
   pinMode(OUT_PIN, OUTPUT);  // OUT PIN init
   digitalWrite( OUT_PIN, LOW);
+  pinMode(VCC_PIN, OUTPUT);  // VCC PIN init
+  digitalWrite( VCC_PIN, HIGH);
   
   Serial.begin(115200);
   Wire.begin();
