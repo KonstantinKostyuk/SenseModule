@@ -8,8 +8,8 @@
 
 // --- define PINS
 #define LED_PIN 13
-#define VCC_PIN 4
-#define OUT_PIN 5
+#define VCC_PIN 5
+#define OUT_PIN 4
 
 // --- define Variables
 int Distance_mm = 0;
